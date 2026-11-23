@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tu definición de aprendizaje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Crimson+Text:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{
+  --font-display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --font-body:"Crimson Text",Georgia,"Times New Roman",serif;
+  --bg:#FFFFFF;
+  --surface:#FFFFFF;
+  --surface-2:#F1F6FF;
+  --ink:#001A33;
+  --ink-soft:#44586C;
+  --line:#CACACA;
+  --brand:#003865;
+  --brand-2:#649EFF;
+  --on-brand:#FFFFFF;
+  --accent:#FF5D74;
+  --accent-2:#C03656;
+  --board:#003865;--chalk:#FFFFFF;--chalk-soft:#CACACA;
+  --shadow:0 1px 2px rgba(0,26,51,.06),0 18px 40px -18px rgba(0,26,51,.28);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:18px;line-height:1.55;padding:24px 16px 48px}
+.shell{max-width:1040px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+button{font-family:inherit;font-size:inherit}
+:focus-visible{outline:3px solid var(--brand-2);outline-offset:3px;border-radius:10px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Cabecera */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.top > div{min-width:0}
+.eyebrow{margin:0 0 6px;font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--brand)}
+h1{margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,1.2rem + 2.4vw,2.4rem);line-height:1.08;letter-spacing:-.02em;text-wrap:balance}
+.kicker{margin:8px 0 0;font-family:var(--font-display);font-weight:700;font-size:1.05rem}
+.sub{margin:6px 0 0;color:var(--ink-soft);max-width:60ch}
+.bubble{flex:none;width:88px;height:88px}
+.bubble .b1{fill:var(--brand)}
+.bubble .b2{fill:var(--brand-2)}
+.bubble .b3{fill:var(--accent)}
+.bubble .b4{fill:var(--line)}
+
+/* Tarjeta */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:clamp(18px,3.2vw,30px)}
+.fade{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stage.in-right{animation:inRight .45s cubic-bezier(.2,.8,.2,1) both}
+.stage.in-left{animation:inLeft .45s cubic-bezier(.2,.8,.2,1) both}
+@keyframes inRight{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+@keyframes inLeft{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+
+/* Pasos */
+.clock{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:0;padding:0;list-style:none}
+.clock button{width:100%;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-soft);cursor:pointer;transition:border-color .2s,background .2s,transform .18s}
+.clock button:disabled{opacity:.5;cursor:not-allowed}
+.clock button:hover:not(:disabled){transform:translateY(-2px);border-color:var(--brand-2)}
+.clock .t{font-family:var(--font-display);font-weight:700;font-size:.92rem;line-height:1.1;color:var(--ink);text-align:center}
+.clock .n{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.clock .done{border-color:color-mix(in srgb,var(--brand) 55%,transparent);background:color-mix(in srgb,var(--brand) 9%,var(--surface))}
+.clock .current{border-color:var(--brand);background:color-mix(in srgb,var(--brand) 14%,var(--surface));box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 22%,transparent)}
+.clock .current .n,.clock .done .n{color:var(--brand)}
+
+/* Contenido de cada paso */
+.stage{margin-top:24px}
+.tag{display:inline-block;padding:4px 11px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--brand)}
+.stage h2{margin:12px 0 8px;font-family:var(--font-display);font-weight:700;font-size:clamp(1.3rem,1.05rem + 1.2vw,1.7rem);line-height:1.15;letter-spacing:-.01em;text-wrap:balance;outline:none}
+.stage p{max-width:66ch}
+.ctx{margin:0 0 6px;padding:14px 16px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);font-size:.95rem;color:var(--ink-soft);max-width:none!important}
+.ctx strong{color:var(--ink)}
+.lead{margin:0 0 8px;color:var(--ink-soft);font-size:.97rem}
+.ask{margin:14px 0 10px;font-family:var(--font-display);font-weight:700;font-size:1.12rem}
+
+.field{display:flex;flex-direction:column;gap:7px;margin:0 0 16px}
+.field label{font-weight:700;font-size:.97rem}
+.field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink);font:inherit;line-height:1.45;resize:vertical;min-height:96px;transition:border-color .2s,box-shadow .2s}
+.field textarea:focus{outline:none;border-color:var(--brand-2);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand-2) 22%,transparent)}
+.field ::placeholder{color:var(--ink-soft);opacity:.75}
+.hint{margin:0;font-size:.88rem;color:var(--ink-soft)}
+
+/* Definiciones */
+.defs{display:grid;gap:12px;margin:14px 0 0;padding:0;list-style:none}
+.def{display:flex;gap:14px;padding:16px 18px;border-radius:16px;border:1px solid var(--line);background:var(--surface)}
+.def .id{flex:none;width:44px;height:44px;border-radius:50%;background:var(--brand);color:var(--on-brand);display:grid;place-items:center;font-family:var(--font-display);font-weight:700;font-size:1rem}
+.def blockquote{margin:0;font-size:1.02rem;line-height:1.5}
+.def cite{display:block;margin-top:6px;font-style:normal;font-size:.86rem;color:var(--ink-soft)}
+.def.mine{background:var(--surface-2);border-style:dashed;border-color:var(--brand-2)}
+.def.mine .id{background:var(--brand-2);color:var(--ink);font-size:.78rem;line-height:1.05;text-align:center}
+.def > div{min-width:0}
+
+/* Rejilla */
+.model{margin:12px 0 0;padding:14px 16px;border-radius:14px;background:var(--board);color:var(--chalk);font-family:var(--font-display);font-weight:700;font-size:1.02rem;line-height:1.35;max-width:none!important}
+.model small{display:block;margin-top:4px;font-family:var(--font-body);font-weight:400;font-size:.86rem;color:var(--chalk-soft)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:16px 0 4px;padding:0;list-style:none;font-size:.92rem}
+.legend li{display:flex;align-items:center;gap:8px}
+
+.mk{width:52px;height:38px;padding:0;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink-soft);font-family:var(--font-display);font-weight:700;font-size:1.1rem;line-height:1;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .15s}
+.mk:hover{border-color:var(--brand-2);transform:translateY(-1px)}
+.mk[data-v="y"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.mk[data-v="p"]{background:var(--brand-2);border-color:var(--brand-2);color:var(--ink)}
+.mk[data-v="n"]{background:var(--surface);color:var(--ink-soft)}
+.chip{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;font-family:var(--font-display);font-weight:700;font-size:.98rem;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-soft)}
+.chip.y{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.chip.p{background:var(--brand-2);border-color:var(--brand-2);color:var(--ink)}
+.chip.n{background:var(--surface);color:var(--ink-soft)}
+
+table.grid{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px}
+.grid thead th{font-family:var(--font-display);font-weight:700;font-size:.8rem;line-height:1.15;text-align:center;color:var(--brand);padding:8px 4px;border-bottom:2px solid var(--brand);vertical-align:bottom}
+.grid th.rowh{text-align:left;padding:10px 10px 10px 4px;width:170px;font-weight:400;vertical-align:middle}
+.grid td{padding:8px 4px;text-align:center;border-bottom:1px solid var(--line)}
+.grid .rl{display:block;font-family:var(--font-display);font-weight:700;font-size:1.02rem}
+.grid .rw{display:block;font-size:.84rem;color:var(--ink-soft);line-height:1.3}
+.deft{margin-top:4px;padding:0;border:0;background:none;color:var(--brand);font-weight:700;font-size:.84rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.grid tr.row.own th,.grid tr.row.own td{background:var(--surface-2)}
+.grid tr.defrow td{text-align:left;padding:10px 14px 14px;font-size:.96rem;color:var(--ink-soft);background:var(--surface-2);border-bottom:1px solid var(--line)}
+.grid .defm{display:none}
+
+/* Reflexión */
+.tally{display:grid;gap:12px;margin:12px 0 0;padding:0;list-style:none}
+.tally li{display:grid;grid-template-columns:minmax(0,210px) 1fr auto 34px;gap:8px 14px;align-items:center}
+.tl{font-weight:700;font-size:.93rem}
+.stack{display:flex;height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.stack i{display:block;height:100%}
+.stack .sy{background:var(--brand)}
+.stack .sp{background:var(--brand-2)}
+.tc{font-size:.85rem;color:var(--ink-soft);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tally-head{display:grid;grid-template-columns:minmax(0,210px) 1fr auto 34px;gap:8px 14px;margin:14px 0 0;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.tally-head span:last-child{text-align:center}
+.note{margin:14px 0 0;padding:13px 16px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);font-size:.97rem;max-width:none!important}
+h3.h{margin:28px 0 8px;font-family:var(--font-display);font-size:1.08rem;font-weight:700}
+
+/* Cierre */
+.closing-board{margin-top:6px;padding:20px 22px;border-radius:16px;background:var(--board);color:var(--chalk)}
+.closing-board .cl{margin:0 0 8px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--chalk-soft)}
+.closing-board p.ct{margin:0;font-family:var(--font-display);font-weight:700;font-size:1.15rem;line-height:1.4;max-width:none}
+.keys{display:grid;gap:10px;margin:16px 0 0;padding:0;list-style:none}
+.keys li{padding:13px 16px;border-radius:14px;border:1px solid var(--line);background:var(--surface);font-size:1rem}
+.keys li b{font-family:var(--font-display)}
+.closing{margin:22px 0 0;padding:20px 22px;border-radius:16px;background:color-mix(in srgb,var(--brand) 12%,var(--surface));border:1px solid color-mix(in srgb,var(--brand) 40%,transparent);font-family:var(--font-display);font-weight:700;font-size:1.05rem;line-height:1.45;max-width:none!important}
+.res-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:22px}
+.toast{font-size:.9rem;color:var(--brand);font-weight:700}
+.copybox{margin-top:14px}
+.copybox label{display:block;margin-bottom:6px;font-weight:700;font-size:.95rem}
+.copybox textarea{width:100%;min-height:170px;padding:12px 14px;border:1.5px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink);font:inherit;font-size:.9rem;line-height:1.45}
+
+/* Navegación */
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px dashed var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border-radius:13px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-weight:700;cursor:pointer;transition:transform .18s,box-shadow .18s,background .18s,border-color .18s}
+.btn:hover:not(:disabled){transform:translateY(-2px);border-color:var(--brand-2)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:var(--on-brand);box-shadow:0 10px 22px -12px var(--brand)}
+.btn.primary:hover:not(:disabled){background:var(--ink);border-color:var(--ink)}
+.btn svg{width:18px;height:18px}
+
+/* Pantallas estrechas: cada definición se convierte en una tarjeta con sus siete dimensiones */
+@media (max-width:900px){
+  .grid,.grid tbody,.grid tr,.grid th,.grid td{display:block}
+  .grid thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .grid tbody.grp{border:1px solid var(--line);border-radius:16px;margin-bottom:14px;padding:6px 14px 10px;background:var(--surface)}
+  .grid tbody.own{background:var(--surface-2);border-style:dashed;border-color:var(--brand-2)}
+  .grid tr.row.own th,.grid tr.row.own td{background:none}
+  .grid th.rowh{width:auto;padding:8px 0 6px;border-bottom:1px solid var(--line)}
+  .grid .defm{display:block;margin-top:6px;font-size:.95rem;color:var(--ink-soft)}
+  .deft{display:none}
+  .grid tr.defrow{display:none!important}
+  .grid td{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;padding:8px 0;border-bottom:1px dashed var(--line)}
+  .grid td:last-child{border-bottom:0}
+  .grid td::before{content:attr(data-l);font-weight:700;font-size:.92rem}
+  .tally li,.tally-head{grid-template-columns:1fr auto}
+  .tally li .stack{grid-column:1 / -1;order:3}
+  .tally li .tl{grid-column:1}
+  .tally li .tc{grid-column:2;order:2}
+  .tally li .chip{display:none}
+  .tally-head{display:none}
+}
+@media (max-width:480px){
+  .bubble{width:64px;height:64px}
+  .clock{gap:4px}
+  .clock .t{font-size:.74rem}
+  .clock .n{font-size:.58rem;letter-spacing:.04em}
+  .nav .btn{flex:1}
+  .res-actions .btn{flex:1}
+  .def{gap:10px;padding:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<main class="shell">
+  <header class="top">
+    <div>
+      <p class="eyebrow">Bloque III. ¿Qué enseño? ¿Qué aprenden?</p>
+      <h1>Tu definición de aprendizaje</h1>
+      <p class="kicker">Actividad de apertura · Análisis</p>
+      <p class="sub">Seis definiciones, siete dimensiones y la tuya. No se trata de acertar, sino de ver qué damos por supuesto cuando hablamos de aprender.</p>
+    </div>
+    <svg class="bubble" viewBox="0 0 96 96" role="img" aria-label="Una cuadrícula de tres por tres puntos de distintos colores">
+      <circle class="b1" cx="22" cy="22" r="9"/><circle class="b2" cx="48" cy="22" r="9"/><circle class="b4" cx="74" cy="22" r="9"/>
+      <circle class="b2" cx="22" cy="48" r="9"/><circle class="b3" cx="48" cy="48" r="9"/><circle class="b1" cx="74" cy="48" r="9"/>
+      <circle class="b4" cx="22" cy="74" r="9"/><circle class="b1" cx="48" cy="74" r="9"/><circle class="b2" cx="74" cy="74" r="9"/>
+    </svg>
+  </header>
+
+  <section class="card" id="card" aria-label="Actividad"></section>
+</main>
+
+<script>
+/* SCORM 1.2 opcional. Si no hay LMS con API, no hace nada y la página funciona igual. */
+(function(){
+  var api=null;
+  function find(w){ var n=0; while(w && !w.API && w.parent && w.parent!==w && n<10){ w=w.parent; n++; } return (w && w.API) ? w.API : null; }
+  try{ api = find(window) || (window.opener ? find(window.opener) : null); }catch(e){}
+  window.__scorm = {
+    init:function(){ try{ if(api){ api.LMSInitialize(""); api.LMSSetValue("cmi.core.lesson_status","incomplete"); api.LMSCommit(""); } }catch(e){} },
+    done:function(){ try{ if(api){ api.LMSSetValue("cmi.core.lesson_status","completed"); api.LMSCommit(""); } }catch(e){} }
+  };
+  window.addEventListener("pagehide",function(){ try{ if(api) api.LMSFinish(""); }catch(e){} });
+  window.__scorm.init();
+})();
+</script>
+<script>
+(function(){
+  var KEY = "bloque3-tu-definicion";
+
+  /* Definiciones tal como aparecen en el guion del Bloque III. */
+  var DEFS = [
+    {id:"D1", who:"Rivas, 2008", cit:"(Rivas, 2008, p. 24)",
+     t:"El aprendizaje puede conceptuarse como proceso interno de cambio resultante de la experiencia personal del aprendiz, tomando el término experiencia en su sentido más amplio y profundo."},
+    {id:"D2", who:"Rivas, 2008", cit:"(Rivas, 2008, p. 21)",
+     t:"El aprendizaje es una propiedad esencial del ser humano, aunque sin constituir la esencia de su ser."},
+    {id:"D3", who:"Delclaux, 1983", cit:"(Delclaux, 1983, p. 116)",
+     t:"Proceso mediante el cual un sujeto adquiere destrezas o habilidades prácticas, incorpora contenidos informativos, o adopta nuevas estrategias de conocimiento y/o acción."},
+    {id:"D4", who:"Domjan, 2010", cit:"(Domjan, 2010, pp. 2 y 30)",
+     t:"Es uno de los procesos biológicos que facilitan la adaptación al ambiente. Es un cambio duradero en los mecanismos de la conducta que involucran estímulos y/o respuestas específicas que resultan de la experiencia previa con estímulos y respuestas similares."},
+    {id:"D5", who:"Delgado y Casado, 2014", cit:"(Delgado y Casado, 2014, p. 58)",
+     t:"Proceso de adquisición de un conocimiento, de una información, por parte de un organismo como fruto de su experiencia de exposición a determinados sucesos (estímulos)."},
+    {id:"D6", who:"Hearst, 2002", cit:"(Hearst, 2002, p. 5)",
+     t:"Proceso teórico cuya ocurrencia se infiere de los cambios en el comportamiento observable de un organismo (su ejecución) como consecuencia de ciertas experiencias medioambientales."}
+  ];
+  var ND = DEFS.length, OWN = ND;               /* la fila 6 es «Mi definición» */
+  var DIMS = ["Biológica","Cognitiva","Afectivo-motivacional","Social-relacional","Espiritual","Personalización-situado","Integra dimensiones"];
+  var NC = DIMS.length;
+  var SYM = {y:"✓", p:"~", n:"–"};
+  var LAB = {y:"Lo recoge", p:"Lo apunta parcialmente", n:"Lo deja fuera"};
+
+  var STEPS = [
+    {t:"Definición", n:"Paso 0"},
+    {t:"Lectura", n:"Paso 1"},
+    {t:"Rejilla", n:"Paso 2"},
+    {t:"Reflexión", n:"Paso 3"},
+    {t:"Cierre", n:"Clave"}
+  ];
+
+  var KEYS = [
+    "Casi ninguna contempla la dimensión espiritual (el sentido, la identidad, la vocación).",
+    "La mayoría se centra en el individuo y su experiencia, y apenas recoge el papel de los otros en el aprendizaje.",
+    "No suelen mencionar la personalización, ni el hecho de que cada experiencia de aprender es irrepetible y situada en un contexto vital concreto.",
+    "Predomina lo cognitivo, conductual o biológico, y rara vez se incorporan las emociones, la afectividad y la motivación.",
+    "Y, sobre todo, aunque algunas reconozcan un aspecto biológico o psicológico, ninguna llega a integrar las cuatro dimensiones. Son miradas valiosas pero reduccionistas cuando se toman por separado."
+  ];
+  var CLOSING = "De ahí parte este bloque. Si queremos decidir qué enseñar y qué aprenden nuestros alumnos, necesitamos una idea de aprendizaje lo bastante amplia para no dejar fuera nada de lo que de verdad importa.";
+
+  var $ = function(id){ return document.getElementById(id); };
+  var card = $("card");
+  function blankGrid(){ var g=[]; for(var r=0;r<=ND;r++){ var row=[]; for(var c=0;c<NC;c++) row.push("n"); g.push(row); } return g; }
+  var S = { step:0, reached:0, own:"", grid:blankGrid(), open:[], r1:"", r2:"", r3:"" };
+
+  try{
+    var sv = JSON.parse(localStorage.getItem(KEY) || "null");
+    if(sv && Array.isArray(sv.grid) && sv.grid.length===ND+1){
+      S.grid = sv.grid.map(function(row){
+        var out=[]; for(var c=0;c<NC;c++){ var v=row && row[c]; out.push(v==="y"||v==="p"||v==="n" ? v : "n"); } return out;
+      });
+      S.step = Math.min(Math.max(+sv.step||0,0),4);
+      S.reached = Math.min(Math.max(+sv.reached||0,0),4);
+      ["own","r1","r2","r3"].forEach(function(k){ S[k] = typeof sv[k]==="string" ? sv[k] : ""; });
+    }
+  }catch(e){}
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify({step:S.step,reached:S.reached,own:S.own,grid:S.grid,r1:S.r1,r2:S.r2,r3:S.r3})); }catch(e){} }
+  function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function hasOwn(){ return S.own.trim().length>0; }
+  function ownText(){ return hasOwn() ? S.own.trim() : "Todavía no has escrito tu definición."; }
+
+  var ICON_PREV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+  var ICON_NEXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+
+  /* ---------- Paneles ---------- */
+  function panel0(){
+    return '<span class="tag">Paso 0 de 3</span>'+
+      '<h2 tabindex="-1" id="focus-h">Paso 0. Tu definición</h2>'+
+      '<p class="ctx"><strong>Antes de empezar.</strong> Antes de entrar en el contenido, dediquemos unos minutos a poner sobre la mesa nuestra propia idea de aprendizaje y a contrastarla con algunas de las definiciones más reconocidas. No se trata de acertar, sino de tomar conciencia de qué entendemos, y qué solemos dar por supuesto, cuando hablamos de aprender.</p>'+
+      '<p class="ask">Antes de leer nada, escribe en una sola frase qué es para ti el aprendizaje.</p>'+
+      '<div class="field"><label for="own">Para mí, aprender es…</label>'+
+      '<textarea id="own" rows="3" maxlength="400" placeholder="Escribe tu definición en una sola frase"></textarea>'+
+      '<p class="hint">Resérvala, la usarás enseguida.</p></div>';
+  }
+  function panel1(){
+    var h = '<span class="tag">Paso 1 de 3</span>'+
+      '<h2 tabindex="-1" id="focus-h">Paso 1. Lee estas definiciones</h2>'+
+      '<p class="lead">A lo largo del tiempo, distintos autores han definido el aprendizaje desde perspectivas diferentes.</p>'+
+      '<ul class="defs">';
+    DEFS.forEach(function(d){
+      h += '<li class="def"><span class="id" aria-hidden="true">'+d.id+'</span><div><span class="sr">'+d.id+'. </span><blockquote>“'+esc(d.t)+'”</blockquote><cite>'+esc(d.cit)+'</cite></div></li>';
+    });
+    h += '<li class="def mine"><span class="id" aria-hidden="true">Mi def.</span><div><span class="sr">Mi definición. </span><blockquote>“'+esc(ownText())+'”</blockquote><cite>Tu definición del Paso 0</cite></div></li>';
+    h += '</ul>';
+    return h;
+  }
+  function gridHTML(){
+    var h = '<table class="grid"><thead><tr><th scope="col"><span class="sr">Definición</span></th>';
+    DIMS.forEach(function(d){ h += '<th scope="col">'+esc(d)+'</th>'; });
+    h += '</tr></thead>';
+    for(var r=0;r<=ND;r++){
+      var own = r===OWN;
+      var label = own ? "Mi definición" : DEFS[r].id;
+      var text = own ? ownText() : DEFS[r].t;
+      var open = !!S.open[r];
+      h += '<tbody class="grp'+(own?' own':'')+'"><tr class="row'+(own?' own':'')+'"><th scope="row" class="rowh">'+
+        '<span class="rl">'+esc(label)+'</span><span class="rw">'+(own?'Paso 0':esc(DEFS[r].who))+'</span>'+
+        '<button type="button" class="deft" data-r="'+r+'" aria-expanded="'+open+'" aria-controls="def-'+r+'">'+(open?'Ocultar definición':'Ver definición')+'</button>'+
+        '<span class="defm">“'+esc(text)+'”</span></th>';
+      for(var c=0;c<NC;c++){
+        var cv = S.grid[r][c] || "n";
+        h += '<td data-l="'+esc(DIMS[c])+'"><button type="button" class="mk" data-r="'+r+'" data-c="'+c+'" data-v="'+cv+'" aria-label="'+esc(label+'. '+DIMS[c]+'. '+LAB[cv]+'. Pulsa para cambiar')+'" title="'+esc(LAB[cv])+'">'+SYM[cv]+'</button></td>';
+      }
+      h += '</tr><tr class="defrow" id="def-'+r+'"'+(open?'':' hidden')+'><td colspan="'+(NC+1)+'">“'+esc(text)+'”</td></tr></tbody>';
+    }
+    h += '</table>';
+    return h;
+  }
+  function panel2(){
+    return '<span class="tag">Paso 2 de 3</span>'+
+      '<h2 tabindex="-1" id="focus-h">Paso 2. Analízalas</h2>'+
+      '<p class="lead">Marca qué dimensiones recoge cada definición. Todas las casillas parten de – (la deja fuera), así que solo tienes que tocar las que quieras cambiar. Cada toque cambia la marca: – , ✓ , ~ y vuelta al principio. Tu propia definición del Paso 0 es la última fila.</p>'+
+      '<p class="model">Referente: el modelo integral de la persona que aprende<small>bio-psico-socio-espiritual y relacional</small></p>'+
+      '<ul class="legend" aria-label="Significado de las marcas">'+
+        ["y","p","n"].map(function(v){ return '<li><span class="chip '+v+'" aria-hidden="true">'+SYM[v]+'</span>'+esc(LAB[v])+'</li>'; }).join("")+
+      '</ul>'+
+      gridHTML();
+  }
+  function tallyCol(c){
+    var y=0,p=0,n=0;
+    for(var r=0;r<ND;r++){ var v=S.grid[r][c]; if(v==="y") y++; else if(v==="p") p++; else if(v==="n") n++; }
+    return {y:y,p:p,n:n};
+  }
+  function similar(){
+    var best=[], max=-1;
+    for(var r=0;r<ND;r++){
+      var m=0; for(var c=0;c<NC;c++){ if(S.grid[r][c] && S.grid[r][c]===S.grid[OWN][c]) m++; }
+      if(m>max){ max=m; best=[r]; } else if(m===max){ best.push(r); }
+    }
+    return {best:best,max:max};
+  }
+  function panel3(){
+    var h = '<span class="tag">Paso 3 de 3</span>'+
+      '<h2 tabindex="-1" id="focus-h">Paso 3. Reflexiona</h2>'+
+      '<p class="lead">Al ver la rejilla completa, esto es lo que has marcado. Cada barra suma las seis definiciones. A la derecha aparece tu propia definición.</p>'+
+      '<div class="tally-head" aria-hidden="true"><span>Dimensión</span><span>D1 a D6</span><span></span><span>Mía</span></div><ul class="tally">';
+    for(var c=0;c<NC;c++){
+      var t = tallyCol(c), mine = S.grid[OWN][c];
+      h += '<li><span class="tl">'+esc(DIMS[c])+'</span>'+
+        '<div class="stack" role="img" aria-label="'+t.y+' la recogen, '+t.p+' la apuntan parcialmente, '+t.n+' la dejan fuera"><i class="sy" style="width:'+(t.y/ND*100)+'%"></i><i class="sp" style="width:'+(t.p/ND*100)+'%"></i></div>'+
+        '<span class="tc">✓ '+t.y+' · ~ '+t.p+' · – '+t.n+'</span>'+
+        '<span class="chip '+(mine||'')+'" title="Tu definición. '+esc(mine?LAB[mine]:'')+'">'+(mine?SYM[mine]:'')+'</span></li>';
+    }
+    h += '</ul>';
+    var s = similar();
+    var names = s.best.map(function(r){ return DEFS[r].id; });
+    var list = names.length>1 ? names.slice(0,-1).join(", ")+" y "+names[names.length-1] : names[0];
+    h += '<p class="note">Por tus marcas, tu definición se parece más a <strong>'+esc(list)+'</strong> ('+s.max+' de '+NC+' casillas iguales).</p>';
+
+    h += '<h3 class="h">Tres preguntas para pensar</h3>'+
+      '<div class="field"><label for="r1">1. ¿Qué columnas se han quedado casi vacías en todas las definiciones?</label><textarea id="r1" rows="3" maxlength="600"></textarea></div>'+
+      '<div class="field"><label for="r2">2. ¿Tu propia definición se parece más a unas definiciones que a otras? ¿Qué deja fuera?</label><textarea id="r2" rows="3" maxlength="600"></textarea></div>'+
+      '<div class="field"><label for="r3">3. Si tuvieras que completar la definición que más te convence, ¿qué le añadirías?</label><textarea id="r3" rows="3" maxlength="600"></textarea></div>'+
+      '<p class="hint">Lo que escribas se queda en tu navegador. Puedes copiarlo al final.</p>';
+    return h;
+  }
+  function panel4(){
+    return '<span class="tag">Clave de cierre</span>'+
+      '<h2 tabindex="-1" id="focus-h">Lo que suele aparecer</h2>'+
+      '<p class="lead">Si observas la rejilla en conjunto, probablemente aparezca un patrón. Las definiciones clásicas iluminan algunas dimensiones del aprendizaje, pero dejan otras en sombra.</p>'+
+      '<ul class="keys">'+KEYS.map(function(k){ return '<li>'+esc(k)+'</li>'; }).join("")+'</ul>'+
+      '<p class="closing">'+esc(CLOSING)+'</p>'+
+      '<div class="res-actions"><button class="btn primary" type="button" id="copy">Copiar mi análisis</button>'+
+      '<button class="btn" type="button" id="again">Empezar de nuevo</button><span class="toast" id="toast" role="status"></span></div>'+
+      '<div class="copybox" id="copybox" hidden><label for="copyarea">Selecciona y copia el texto</label><textarea id="copyarea" readonly></textarea></div>';
+  }
+
+  /* ---------- Render ---------- */
+  var NEXT = ["Ver las definiciones","Analizarlas","Reflexionar","Ver la clave de cierre",""];
+  function canNext(){
+    if(S.step===0) return hasOwn();
+    return true;
+  }
+  function render(dir){
+    var h = '<ol class="clock" aria-label="Pasos de la actividad">';
+    STEPS.forEach(function(x,i){
+      var cls = i===S.step ? "current" : (i<S.reached || (i<S.step) ? "done" : "");
+      h += '<li><button type="button" class="'+cls+'" data-i="'+i+'"'+(i>S.reached?' disabled':'')+(i===S.step?' aria-current="step"':'')+'><span class="t">'+x.t+'</span><span class="n">'+x.n+'</span></button></li>';
+    });
+    h += '</ol><div class="stage '+(dir>0?'in-right':(dir<0?'in-left':''))+'">'+[panel0,panel1,panel2,panel3,panel4][S.step]()+'</div>';
+    h += '<div class="nav"><button class="btn" type="button" id="prev"'+(S.step===0?' disabled':'')+'>'+ICON_PREV+' Anterior</button>'+
+         (S.step<4 ? '<button class="btn primary" type="button" id="next"'+(canNext()?'':' disabled')+'>'+NEXT[S.step]+' '+ICON_NEXT+'</button>' : '')+'</div>';
+    card.innerHTML = h;
+    bind();
+    if(dir){ var f=$("focus-h"); if(f) f.focus({preventScroll:true}); }
+  }
+  function go(i, dir){
+    S.step = i; S.reached = Math.max(S.reached, i); save();
+    render(dir);
+    card.scrollIntoView({behavior:"smooth",block:"start"});
+    if(i===4 && window.__scorm) window.__scorm.done();
+  }
+  function bind(){
+    Array.prototype.forEach.call(card.querySelectorAll(".clock button"), function(b){
+      b.addEventListener("click", function(){ var i=+b.getAttribute("data-i"); if(i!==S.step && i<=S.reached) go(i, i>S.step?1:-1); });
+    });
+    var prev=$("prev"), next=$("next");
+    if(prev) prev.addEventListener("click", function(){ if(S.step>0) go(S.step-1,-1); });
+    if(next) next.addEventListener("click", function(){ if(canNext() && S.step<4){ S.reached=Math.max(S.reached,S.step+1); go(S.step+1,1); } });
+
+    var own=$("own");
+    if(own){ own.value=S.own; own.addEventListener("input", function(){ S.own=own.value; save(); var n=$("next"); if(n) n.disabled=!canNext(); }); }
+    ["r1","r2","r3"].forEach(function(k){
+      var t=$(k); if(t){ t.value=S[k]; t.addEventListener("input", function(){ S[k]=t.value; save(); }); }
+    });
+
+    Array.prototype.forEach.call(card.querySelectorAll(".mk"), function(b){
+      b.addEventListener("click", function(){ mark(+b.getAttribute("data-r"), +b.getAttribute("data-c")); });
+    });
+    Array.prototype.forEach.call(card.querySelectorAll(".deft"), function(b){
+      b.addEventListener("click", function(){
+        var r=+b.getAttribute("data-r"); S.open[r]=!S.open[r];
+        var row=$("def-"+r); if(row) row.hidden=!S.open[r];
+        b.setAttribute("aria-expanded", String(!!S.open[r]));
+        b.textContent = S.open[r] ? "Ocultar definición" : "Ver definición";
+      });
+    });
+    var copy=$("copy"), again=$("again");
+    if(copy) copy.addEventListener("click", doCopy);
+    if(again) again.addEventListener("click", function(){
+      S = { step:0, reached:0, own:"", grid:blankGrid(), open:[], r1:"", r2:"", r3:"" }; save(); render(0);
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
+  }
+  var CYCLE = {n:"y", y:"p", p:"n"};
+  function mark(r,c){
+    S.grid[r][c] = CYCLE[S.grid[r][c] || "n"];
+    save();
+    var v=S.grid[r][c], b=card.querySelector('.mk[data-r="'+r+'"][data-c="'+c+'"]');
+    if(b){ b.setAttribute("data-v",v); b.textContent=SYM[v]; b.title=LAB[v];
+      b.setAttribute("aria-label", (r===OWN?"Mi definición":DEFS[r].id)+". "+DIMS[c]+". "+LAB[v]+". Pulsa para cambiar"); }
+  }
+
+  /* ---------- Copiar ---------- */
+  function doCopy(){
+    var lines = [];
+    lines.push("TU DEFINICIÓN DE APRENDIZAJE. Mi análisis","");
+    lines.push("Mi definición (Paso 0)", S.own.trim()||"(sin escribir)","");
+    lines.push("Rejilla (✓ lo recoge, ~ lo apunta parcialmente, – lo deja fuera)");
+    for(var r=0;r<=ND;r++){
+      lines.push((r===OWN?"Mi definición":DEFS[r].id)+": "+DIMS.map(function(d,c){ return d+" "+SYM[S.grid[r][c]||"n"]; }).join(" · "));
+    }
+    lines.push("");
+    lines.push("Reflexión");
+    lines.push("1. Columnas casi vacías: "+(S.r1.trim()||"(sin escribir)"));
+    lines.push("2. Mi definición frente a las demás y lo que deja fuera: "+(S.r2.trim()||"(sin escribir)"));
+    lines.push("3. Lo que añadiría a la definición que más me convence: "+(S.r3.trim()||"(sin escribir)"));
+    var txt = lines.join("\n"), toast=$("toast");
+    function fb(){ var bx=$("copybox"), ta=$("copyarea"); bx.hidden=false; ta.value=txt; ta.focus(); ta.select(); toast.textContent=""; }
+    try{ navigator.clipboard.writeText(txt).then(function(){ toast.textContent="Copiado"; }, fb); }catch(e){ fb(); }
+  }
+
+  if(S.step>S.reached) S.reached=S.step;
+  if(S.step>=2 && !hasOwn()) { S.step=0; }
+  render(0);
+})();
+</script>
+</body>
+</html>
